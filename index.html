@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Stars Academy - Gimnasia Rítmica</title>
+    <!-- Font Awesome para iconos oficiales -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #7b2d8e;
+            --primary-light: #a64dba;
+            --secondary: #d4a843;
+            --secondary-light: #f0d078;
+            --dark: #1a1a2e;
+            --darker: #0f0f1a;
+            --light: #faf5ff;
+            --white: #ffffff;
+            --gray: #6b7280;
+            --gray-light: #e5e7eb;
+            --success: #10b981;
+            --danger: #ef4444;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.08);
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 20px 40px rgba(0, 0, 0, 0.2);
+            --shadow-xl: 0 25px 50px rgba(0, 0, 0, 0.3);
+            --radius-sm: 8px;
+            --radius: 12px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-heading: 'Georgia', 'Times New Roman', serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--light);
+            color: var(--dark);
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(15, 15, 26, 0.85); backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all var(--transition); padding: 0 2rem;
+        }
+        .navbar.scrolled { background: rgba(15, 15, 26, 0.97); box-shadow: var(--shadow-lg); }
+        .navbar-inner {
+            max-width: 1300px; margin: 0 auto; display: flex;
+            align-items: center; justify-content: space-between; height: 70px;
+        }
+        .navbar-logo {
+            display: flex; align-items: center; gap: 12px; text-decoration: none;
+            color: var(--white); font-weight: 700; font-size: 1.4rem; letter-spacing: 1px;
+        }
+        .navbar-logo .logo-icon {
+            width: 44px; height: 44px;
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 1.6rem; box-shadow: 0 0 20px rgba(167, 77, 186, 0.4);
+            animation: logoPulse 3s ease-in-out infinite;
+        }
+        @keyframes logoPulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(167, 77, 186, 0.4); }
+            50% { box-shadow: 0 0 35px rgba(212, 168, 67, 0.6); }
+        }
+        .nav-links { display: flex; list-style: none; gap: 2rem; align-items: center; }
+        .nav-links a {
+            color: #ccc; text-decoration: none; font-weight: 500; font-size: 0.95rem;
+            letter-spacing: 0.5px; transition: color var(--transition); position: relative;
+        }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: -6px; left: 0; width: 0; height: 2px;
+            background: var(--secondary); transition: width var(--transition); border-radius: 2px;
+        }
+        .nav-links a:hover { color: var(--white); }
+        .nav-links a:hover::after { width: 100%; }
+        .btn-login {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: var(--white) !important; padding: 10px 22px; border-radius: 50px;
+            font-weight: 600; letter-spacing: 0.5px; border: none; cursor: pointer;
+            transition: all var(--transition); box-shadow: 0 4px 15px rgba(123, 45, 142, 0.4);
+            font-size: 0.9rem; white-space: nowrap;
+        }
+        .btn-login:hover {
+            transform: translateY(-2px); box-shadow: 0 8px 25px rgba(123, 45, 142, 0.6);
+            background: linear-gradient(135deg, var(--primary-light), #c060d4); color: var(--white) !important;
+        }
+        .hamburger { display: none; flex-direction: column; gap: 6px; cursor: pointer; z-index: 1001; background: none; border: none; padding: 8px; }
+        .hamburger span { width: 28px; height: 3px; background: var(--white); border-radius: 3px; transition: all var(--transition); }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
+
+        /* HERO */
+        .hero {
+            min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center;
+            position: relative;
+            background: linear-gradient(160deg, #1a0a2e 0%, #1a1a2e 30%, #0f0f1a 60%, #1a0a2e 100%);
+            overflow: hidden; padding: 100px 2rem 60px;
+        }
+        .hero::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(ellipse at 30% 50%, rgba(167, 77, 186, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at 70% 30%, rgba(212, 168, 67, 0.1) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(123, 45, 142, 0.12) 0%, transparent 50%);
+            animation: heroBgFloat 20s ease-in-out infinite;
+        }
+        @keyframes heroBgFloat { 0%,100%{transform:translate(0,0) rotate(0deg);} 33%{transform:translate(2%,-1%) rotate(1deg);} 66%{transform:translate(-1%,2%) rotate(-1deg);} }
+        .hero-particles { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+        .particle {
+            position: absolute; border-radius: 50%;
+            animation: floatUp linear infinite; opacity: 0;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-10vh) scale(1.5); opacity: 0; }
+        }
+        .hero-content { position: relative; z-index: 2; max-width: 800px; }
+        .hero-badge {
+            display: inline-block; background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.15); padding: 8px 20px; border-radius: 50px;
+            color: var(--secondary-light); font-size: 0.9rem; letter-spacing: 2px;
+            text-transform: uppercase; margin-bottom: 1.5rem; animation: fadeInDown 0.8s ease-out;
+        }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        .hero h1 {
+            font-family: var(--font-heading); font-size: clamp(2.8rem, 6vw, 5rem); color: var(--white);
+            margin-bottom: 0.5rem; line-height: 1.1; animation: fadeInDown 0.8s ease-out 0.1s both;
+        }
+        .hero h1 .accent {
+            background: linear-gradient(135deg, var(--secondary-light), var(--secondary), #c8963e);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .hero h2 {
+            font-size: clamp(1.2rem, 2.5vw, 1.6rem); color: #b0a0c0; font-weight: 400;
+            margin-bottom: 2rem; letter-spacing: 1px; animation: fadeInDown 0.8s ease-out 0.2s both;
+        }
+        .hero-cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; animation: fadeInDown 0.8s ease-out 0.3s both; }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: var(--white);
+            padding: 14px 32px; border-radius: 50px; text-decoration: none; font-weight: 600;
+            font-size: 1rem; letter-spacing: 0.5px; transition: all var(--transition);
+            box-shadow: 0 8px 25px rgba(123, 45, 142, 0.5); border: none; cursor: pointer; display: inline-block;
+        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 14px 35px rgba(123, 45, 142, 0.7); }
+        .btn-outline {
+            background: transparent; color: var(--white); padding: 14px 32px; border-radius: 50px;
+            text-decoration: none; font-weight: 600; font-size: 1rem; letter-spacing: 0.5px;
+            border: 2px solid rgba(255, 255, 255, 0.3); transition: all var(--transition); cursor: pointer; display: inline-block;
+        }
+        .btn-outline:hover { border-color: var(--secondary); color: var(--secondary-light); background: rgba(255, 255, 255, 0.04); }
+
+        /* SECTIONS */
+        .section { padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 3.5rem; }
+        .section-label { display: inline-block; color: var(--primary); font-weight: 700; letter-spacing: 3px; text-transform: uppercase; font-size: 0.85rem; margin-bottom: 0.5rem; }
+        .section-title { font-family: var(--font-heading); font-size: clamp(2rem, 4vw, 3rem); color: var(--darker); margin-bottom: 0.8rem; line-height: 1.2; }
+        .accent-underline { display: block; width: 60px; height: 3px; background: linear-gradient(90deg, var(--primary), var(--secondary)); margin: 1rem auto 0; border-radius: 3px; }
+
+        /* ABOUT */
+        #sobre-nosotros { background: var(--white); border-radius: var(--radius-xl); box-shadow: var(--shadow); margin: -3rem auto 2rem; position: relative; z-index: 5; padding: 4rem 3rem; max-width: 1100px; }
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; }
+        .about-image { border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-lg); height: 350px; position: relative; }
+        .about-image img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s; }
+        .about-image:hover img { transform: scale(1.03); }
+        .about-text h3 { font-family: var(--font-heading); font-size: 1.8rem; margin-bottom: 1rem; color: var(--darker); }
+        .about-text p { color: #4b5563; margin-bottom: 1rem; font-size: 1.05rem; }
+        .about-stats { display: flex; gap: 2rem; margin-top: 1.5rem; flex-wrap: wrap; }
+        .stat-item { text-align: center; }
+        .stat-number { font-size: 2.5rem; font-weight: 800; color: var(--primary); font-family: var(--font-heading); }
+        .stat-label { font-size: 0.85rem; color: var(--gray); text-transform: uppercase; letter-spacing: 1px; }
+
+        /* SEDES */
+        #sedes { background: var(--light); }
+        .sedes-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
+        .sede-card { background: var(--white); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow); transition: all var(--transition); border: 1px solid transparent; }
+        .sede-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-xl); border-color: rgba(123, 45, 142, 0.2); }
+        .sede-card-image { height: 200px; overflow: hidden; position: relative; }
+        .sede-card-image img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.3s; }
+        .sede-card:hover .sede-card-image img { transform: scale(1.05); }
+        .sede-card-body { padding: 1.5rem; }
+        .sede-card-body h4 { font-family: var(--font-heading); font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--darker); }
+        .sede-card-body .sede-location { color: var(--primary); font-weight: 600; font-size: 0.9rem; margin-bottom: 0.8rem; display: flex; align-items: center; gap: 6px; }
+        .sede-card-body p { color: #6b7280; font-size: 0.95rem; line-height: 1.6; }
+        .sede-card-body .sede-schedule { margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--gray-light); font-size: 0.85rem; color: var(--gray); display: flex; align-items: center; gap: 6px; }
+        .sede-card-body .sede-album-btn { margin-top: 1rem; background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 30px; cursor: pointer; font-size: 0.9rem; transition: background 0.3s; }
+        .sede-card-body .sede-album-btn:hover { background: var(--primary-light); }
+        .btn-change-img {
+            background: rgba(0,0,0,0.5); color: white; border: none; padding: 6px 12px; border-radius: 20px;
+            cursor: pointer; font-size: 0.8rem; position: absolute; bottom: 10px; right: 10px;
+            transition: background 0.3s; display: none; z-index: 5;
+        }
+        .sede-card-image:hover .btn-change-img, .about-image:hover .btn-change-img { display: block; }
+        .btn-change-img:hover { background: rgba(0,0,0,0.7); }
+
+        /* CALENDARIO */
+        #calendario { background: var(--white); border-radius: var(--radius-xl); box-shadow: var(--shadow); max-width: 1100px; margin: 2rem auto; padding: 4rem 3rem; }
+        .eventos-grid { display: grid; grid-template-columns: 1fr; gap: 1.2rem; max-width: 800px; margin: 0 auto; }
+        .evento-card { background: #faf5ff; border-radius: var(--radius-lg); padding: 1.5rem 2rem; display: flex; align-items: center; gap: 2rem; border-left: 6px solid var(--secondary); transition: all var(--transition); box-shadow: var(--shadow-sm); }
+        .evento-card:hover { transform: translateX(6px); box-shadow: var(--shadow); }
+        .evento-fecha { font-weight: 800; font-size: 1.3rem; color: var(--primary); min-width: 120px; font-family: var(--font-heading); }
+        .evento-info { flex: 1; }
+        .evento-info h4 { font-size: 1.1rem; margin-bottom: 0.2rem; color: var(--darker); }
+        .evento-info p { color: #6b7280; font-size: 0.95rem; margin: 0; }
+        .btn-remove-evento { background: var(--danger); color: white; border: none; padding: 6px 14px; border-radius: 30px; cursor: pointer; font-size: 0.8rem; transition: all var(--transition); }
+        .btn-remove-evento:hover { background: #dc2626; transform: scale(1.05); }
+
+        /* CONTACTO */
+        #contacto { background: var(--white); border-radius: var(--radius-xl); box-shadow: var(--shadow); max-width: 1100px; margin: 2rem auto; padding: 4rem 3rem; }
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+        .contact-info h4 { font-family: var(--font-heading); font-size: 1.5rem; margin-bottom: 0.5rem; }
+        .contact-info .info-item { display: flex; align-items: flex-start; gap: 12px; margin: 1.2rem 0; color: #4b5563; }
+        .info-item .icon-circle { width: 40px; height: 40px; min-width: 40px; background: #f3e8ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--primary); }
+        .social-links { display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
+        .social-link { width: 48px; height: 48px; border-radius: 50%; background: #f3e8ff; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 1.5rem; transition: all var(--transition); color: var(--primary); }
+        .social-link:hover { background: var(--primary); color: white; transform: translateY(-3px); }
+        .contact-form-area { background: #faf5ff; padding: 2rem; border-radius: var(--radius-lg); text-align: center; color: var(--gray); font-style: italic; }
+
+        /* FOOTER */
+        footer { background: var(--darker); color: #999; text-align: center; padding: 2.5rem 2rem; font-size: 0.9rem; letter-spacing: 0.5px; }
+        footer strong { color: var(--secondary-light); }
+
+        /* MODAL LOGIN */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity var(--transition); backdrop-filter: blur(4px); }
+        .modal-overlay.active { opacity: 1; pointer-events: all; }
+        .modal { background: var(--white); border-radius: var(--radius-xl); padding: 2.5rem 2rem; width: 90%; max-width: 420px; box-shadow: var(--shadow-xl); position: relative; transform: translateY(20px); transition: transform var(--transition); }
+        .modal-overlay.active .modal { transform: translateY(0); }
+        .modal-close { position: absolute; top: 16px; right: 20px; background: none; border: none; font-size: 1.8rem; cursor: pointer; color: var(--gray); }
+        .modal-close:hover { color: var(--danger); }
+        .modal h3 { font-family: var(--font-heading); text-align: center; margin-bottom: 0.3rem; font-size: 1.5rem; color: var(--darker); }
+        .modal .modal-subtitle { text-align: center; color: var(--gray); font-size: 0.9rem; margin-bottom: 1.5rem; }
+        .form-group { margin-bottom: 1.2rem; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 0.4rem; font-size: 0.9rem; color: var(--dark); }
+        .form-group input { width: 100%; padding: 12px 16px; border: 2px solid var(--gray-light); border-radius: var(--radius-sm); font-size: 1rem; transition: all var(--transition); background: #fafafa; }
+        .form-group input:focus { outline: none; border-color: var(--primary-light); box-shadow: 0 0 0 4px rgba(167, 77, 186, 0.1); background: white; }
+        .btn-submit { width: 100%; padding: 13px; background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; border: none; border-radius: 50px; font-size: 1rem; font-weight: 600; cursor: pointer; letter-spacing: 0.5px; transition: all var(--transition); box-shadow: 0 4px 15px rgba(123, 45, 142, 0.4); }
+        .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(123, 45, 142, 0.6); }
+        .login-error { color: var(--danger); text-align: center; font-size: 0.85rem; margin-top: 0.8rem; display: none; font-weight: 500; }
+        .login-error.show { display: block; animation: shake 0.5s ease; }
+        @keyframes shake { 0%,100%{transform:translateX(0);} 25%{transform:translateX(-8px);} 50%{transform:translateX(8px);} 75%{transform:translateX(-4px);} }
+        .btn-logout { background: var(--danger); color: white; border: none; padding: 8px 16px; border-radius: 50px; cursor: pointer; font-weight: 600; font-size: 0.85rem; transition: all var(--transition); }
+        .btn-logout:hover { background: #dc2626; transform: scale(1.05); }
+
+        /* Panel de administración en navbar (dropdown) */
+        .admin-dropdown { position: relative; display: inline-block; }
+        .admin-dropdown .dropdown-btn { background: var(--primary); color: white; border: none; padding: 10px 18px; border-radius: 50px; cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: background 0.3s; }
+        .admin-dropdown .dropdown-btn:hover { background: var(--primary-light); }
+        .admin-dropdown .dropdown-menu {
+            display: none; position: absolute; right: 0; top: 50px; background: var(--white); border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl); padding: 0.8rem; min-width: 220px; z-index: 100;
+            flex-direction: column; gap: 0.4rem;
+        }
+        .admin-dropdown .dropdown-menu.show { display: flex; }
+        .admin-dropdown .dropdown-menu button {
+            background: #f3e8ff; border: none; padding: 8px 14px; border-radius: var(--radius-sm);
+            cursor: pointer; font-weight: 500; font-size: 0.9rem; transition: all var(--transition);
+            text-align: left; color: var(--dark);
+        }
+        .admin-dropdown .dropdown-menu button:hover { background: var(--primary); color: white; }
+
+        /* MODAL ÁLBUM DE FOTOS */
+        .album-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 3000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s; backdrop-filter: blur(6px); }
+        .album-modal-overlay.active { opacity: 1; pointer-events: all; }
+        .album-modal {
+            background: var(--white); border-radius: var(--radius-xl); padding: 2rem; width: 90%; max-width: 900px;
+            max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-xl); position: relative;
+            transform: translateY(20px); transition: transform 0.3s;
+        }
+        .album-modal-overlay.active .album-modal { transform: translateY(0); }
+        .album-modal .close-album { position: sticky; top: 0; float: right; background: none; border: none; font-size: 2rem; cursor: pointer; color: var(--gray); z-index: 10; }
+        .album-modal .close-album:hover { color: var(--danger); }
+        .album-modal h3 { font-family: var(--font-heading); margin-bottom: 1.5rem; color: var(--darker); }
+        .album-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+        .album-grid .foto-item { position: relative; border-radius: var(--radius-sm); overflow: hidden; box-shadow: var(--shadow-sm); aspect-ratio: 1; }
+        .album-grid .foto-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .album-grid .foto-item .delete-foto {
+            position: absolute; top: 4px; right: 4px; background: rgba(239, 68, 68, 0.8); color: white; border: none;
+            border-radius: 50%; width: 26px; height: 26px; cursor: pointer; font-size: 0.9rem;
+            transition: background 0.3s; display: none;
+        }
+        .album-grid .foto-item:hover .delete-foto { display: block; }
+        .album-grid .foto-item .delete-foto:hover { background: var(--danger); }
+        .album-add-foto { display: flex; gap: 0.8rem; flex-wrap: wrap; align-items: center; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--gray-light); }
+        .album-add-foto input { flex: 1; min-width: 200px; padding: 10px 14px; border: 2px solid var(--gray-light); border-radius: var(--radius-sm); font-size: 1rem; }
+        .album-add-foto input:focus { outline: none; border-color: var(--primary-light); }
+        .album-add-foto button { background: var(--primary); color: white; border: none; padding: 10px 22px; border-radius: 50px; cursor: pointer; font-weight: 600; transition: background 0.3s; }
+        .album-add-foto button:hover { background: var(--primary-light); }
+
+        .editable-highlight { outline: 3px dashed var(--secondary) !important; outline-offset: 4px; cursor: text; border-radius: 4px; transition: outline 0.2s; }
+        .editing-indicator { position: fixed; top: 80px; left: 50%; transform: translateX(-50%); background: var(--secondary); color: var(--darker); padding: 8px 20px; border-radius: 50px; font-weight: 700; font-size: 0.85rem; z-index: 1800; letter-spacing: 1px; display: none; box-shadow: var(--shadow-lg); }
+        .editing-indicator.active { display: block; animation: fadeInDown 0.4s ease; }
+
+        .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: #1a1a2e; color: white; padding: 12px 24px; border-radius: 50px; font-weight: 600; font-size: 0.9rem; z-index: 3000; opacity: 0; pointer-events: none; transition: opacity 0.4s; box-shadow: var(--shadow-lg); }
+        .toast.show { opacity: 1; }
+        .toast.success { background: var(--success); }
+        .toast.error { background: var(--danger); }
+
+        @media (max-width: 768px) {
+            .nav-links { position: fixed; top: 0; right: -100%; width: 75%; max-width: 320px; height: 100vh; background: var(--darker); flex-direction: column; padding: 100px 2rem 2rem; gap: 1.5rem; transition: right var(--transition); box-shadow: var(--shadow-xl); }
+            .nav-links.active { right: 0; }
+            .hamburger { display: flex; }
+            .about-grid, .contact-grid { grid-template-columns: 1fr; }
+            .about-image { height: 220px; }
+            #sobre-nosotros, #contacto, #calendario { padding: 2rem 1.5rem; margin: -2rem 1rem 1rem; border-radius: var(--radius-lg); }
+            .section { padding: 3rem 1rem; }
+            .hero h1 { font-size: 2.2rem; }
+            .hero h2 { font-size: 1rem; }
+            .sedes-grid { grid-template-columns: 1fr; }
+            .evento-card { flex-direction: column; align-items: flex-start; gap: 0.5rem; padding: 1rem; }
+            .evento-fecha { min-width: auto; }
+            .album-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <div class="navbar-inner">
+            <a href="#" class="navbar-logo">
+                <div class="logo-icon">⭐</div>
+                <span>New Stars Academy</span>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#sobre-nosotros">Sobre Nosotros</a></li>
+                <li><a href="#sedes">Sedes</a></li>
+                <li><a href="#calendario">Calendario</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+                <li><button class="btn-login" id="btnLoginNav" onclick="openLoginModal()">🔐 Entrenadora</button></li>
+                <li id="logoutNavItem" style="display:none;">
+                    <button class="btn-logout" onclick="logout()">Cerrar sesión</button>
+                </li>
+                <li id="adminNavItem" style="display:none;" class="admin-dropdown">
+                    <button class="dropdown-btn" onclick="toggleAdminDropdown(event)">⚙️ Panel</button>
+                    <div class="dropdown-menu" id="adminDropdownMenu">
+                        <button onclick="toggleEditMode()">✏️ Activar/Desactivar edición</button>
+                        <button onclick="addSede()">➕ Añadir sede</button>
+                        <button onclick="addEvento()">📅 Añadir evento</button>
+                        <button onclick="changePasswordPrompt()">🔑 Cambiar contraseña</button>
+                        <button onclick="resetToDefaults()">🔄 Restaurar valores</button>
+                        <button onclick="logout()">🚪 Cerrar sesión</button>
+                    </div>
+                </li>
+            </ul>
+            <button class="hamburger" id="hamburger" aria-label="Menú"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero" id="inicio">
+        <div class="hero-particles" id="heroParticles"></div>
+        <div class="hero-content">
+            <span class="hero-badge">🌟 Gimnasia Rítmica</span>
+            <h1>Brilla con <span class="accent">New Stars</span> Academy</h1>
+            <h2>Formamos campeonas con pasión, disciplina y arte. Descubre nuestras sedes y únete a la familia.</h2>
+            <div class="hero-cta">
+                <a href="#sedes" class="btn-primary">Ver Sedes</a>
+                <a href="#contacto" class="btn-outline">Contáctanos</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="sobre-nosotros" class="section">
+        <div class="section-header">
+            <span class="section-label">Conócenos</span>
+            <h2 class="section-title">Sobre New Stars Academy</h2>
+            <span class="accent-underline"></span>
+        </div>
+        <div class="about-grid">
+            <div class="about-image" id="aboutImageContainer">
+                <img id="aboutImage" src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=400&fit=crop" alt="Gimnasia rítmica">
+                <button class="btn-change-img" id="btnChangeAboutImage" style="display:none;" onclick="changeAboutImage()">🖼️ Cambiar imagen</button>
+            </div>
+            <div class="about-text" id="aboutTextContainer">
+                <h3 id="aboutTitle">Pasión por la gimnasia rítmica</h3>
+                <p id="aboutDesc1">En <strong>New Stars Academy</strong> llevamos más de 10 años formando gimnastas de alto nivel. Nuestra metodología combina técnica, expresión corporal y valores como la perseverancia y el trabajo en equipo.</p>
+                <p id="aboutDesc2">Contamos con entrenadoras tituladas y un ambiente seguro donde cada niña y joven puede desarrollar su máximo potencial.</p>
+                <div class="about-stats">
+                    <div class="stat-item"><span class="stat-number" id="statYears">10+</span><span class="stat-label">Años</span></div>
+                    <div class="stat-item"><span class="stat-number" id="statSedes">5</span><span class="stat-label">Sedes</span></div>
+                    <div class="stat-item"><span class="stat-number" id="statAlumnas">300+</span><span class="stat-label">Alumnas</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SEDES -->
+    <section id="sedes" class="section">
+        <div class="section-header">
+            <span class="section-label">Nuestras Sedes</span>
+            <h2 class="section-title">Encuentra tu sede más cercana</h2>
+            <span class="accent-underline"></span>
+        </div>
+        <div class="sedes-grid" id="sedesGrid"></div>
+    </section>
+
+    <!-- CALENDARIO -->
+    <section id="calendario" class="section">
+        <div class="section-header">
+            <span class="section-label">Actividades 2025</span>
+            <h2 class="section-title">Calendario anual</h2>
+            <span class="accent-underline"></span>
+        </div>
+        <div class="eventos-grid" id="eventosGrid"></div>
+    </section>
+
+    <!-- CONTACTO -->
+    <section id="contacto" class="section">
+        <div class="section-header">
+            <span class="section-label">Contacto</span>
+            <h2 class="section-title">Hablemos</h2>
+            <span class="accent-underline"></span>
+        </div>
+        <div class="contact-grid">
+            <div class="contact-info">
+                <h4 id="contactTitle">Información de contacto</h4>
+                <div class="info-item"><div class="icon-circle"><i class="fas fa-map-pin"></i></div><span id="contactAddress">Guanacaste, Costa Rica</span></div>
+                <div class="info-item"><div class="icon-circle"><i class="fas fa-phone"></i></div><span id="contactPhone">+506 8663 4285</span></div>
+                <div class="info-item"><div class="icon-circle"><i class="fas fa-envelope"></i></div><span id="contactEmail">newstarsacademy46@gmail.com</span></div>
+                <div class="social-links">
+                    <a href="https://wa.me/50686634285" target="_blank" class="social-link" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="https://www.facebook.com/NSAGimnasiaRitmicaGuanacaste?locale=es_LA" target="_blank" class="social-link" title="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/newstarsacademy/" target="_blank" class="social-link" title="Instagram"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="contact-form-area">
+                <p>📝 Para consultas e inscripciones, escríbenos a nuestro correo o llámanos. ¡Te esperamos!</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 <strong>New Stars Academy</strong> — Gimnasia Rítmica. Todos los derechos reservados.</p>
+    </footer>
+
+    <!-- MODAL LOGIN -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal">
+            <button class="modal-close" onclick="closeLoginModal()">&times;</button>
+            <h3>🔐 Acceso Entrenadora</h3>
+            <p class="modal-subtitle">Introduce tus credenciales para editar la página</p>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group"><label for="username">Usuario</label><input type="text" id="username" placeholder="Tu usuario" required autocomplete="username"></div>
+                <div class="form-group"><label for="password">Contraseña</label><input type="password" id="password" placeholder="Tu contraseña" required autocomplete="current-password"></div>
+                <button type="submit" class="btn-submit">Ingresar</button>
+                <p class="login-error" id="loginError">Usuario o contraseña incorrectos</p>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL ÁLBUM DE FOTOS -->
+    <div class="album-modal-overlay" id="albumModal">
+        <div class="album-modal">
+            <button class="close-album" onclick="closeAlbumModal()">&times;</button>
+            <h3 id="albumTitle">Álbum de fotos</h3>
+            <div class="album-grid" id="albumGrid"></div>
+            <div class="album-add-foto" id="albumAddFoto" style="display:none;">
+                <input type="text" id="albumFotoUrl" placeholder="URL de la imagen (ej: https://...jpg)" />
+                <button onclick="addFotoToAlbum()">➕ Añadir foto</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="editing-indicator" id="editingIndicator">✏️ Modo Edición Activado — Haz clic en textos e imágenes para editarlas</div>
+    <div class="toast" id="toast"></div>
+
+    <script>
+        (function() {
+            // ===== CONFIGURACIÓN =====
+            const DEFAULT_PASSWORD = 'NewStars2025';
+
+            async function hashPassword(password) {
+                const encoder = new TextEncoder();
+                const data = encoder.encode(password);
+                const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+                const hashArray = Array.from(new Uint8Array(hashBuffer));
+                return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            }
+
+            const DEFAULT_CONTENT = {
+                aboutImage: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=400&fit=crop',
+                aboutTitle: 'Pasión por la gimnasia rítmica',
+                aboutDesc1: 'En <strong>New Stars Academy</strong> llevamos más de 10 años formando gimnastas de alto nivel. Nuestra metodología combina técnica, expresión corporal y valores como la perseverancia y el trabajo en equipo.',
+                aboutDesc2: 'Contamos con entrenadoras tituladas y un ambiente seguro donde cada niña y joven puede desarrollar su máximo potencial.',
+                statYears: '10+',
+                statSedes: '5',
+                statAlumnas: '300+',
+                contactTitle: 'Información de contacto',
+                contactAddress: 'Guanacaste, Costa Rica',
+                contactPhone: '+506 8663 4285',
+                contactEmail: 'newstarsacademy46@gmail.com',
+                sedes: [
+                    { id: 1, nombre: 'Sede Central - Madrid', direccion: 'Calle Gran Vía 45, Madrid', descripcion: 'Nuestra sede principal con más de 500m² de instalaciones. Sala de entrenamiento con espejos, vestuarios completos y zona de espera para padres.', horario: 'Lunes a Viernes: 16:00 - 20:30 | Sábados: 10:00 - 14:00', imagen: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=250&fit=crop', fotos: ['https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=250&fit=crop'] },
+                    { id: 2, nombre: 'Sede Barcelona', direccion: 'Avenida Diagonal 230, Barcelona', descripcion: 'Amplio gimnasio con equipamiento de última generación. Clases para todos los niveles, desde iniciación hasta competición.', horario: 'Lunes a Viernes: 16:30 - 20:30 | Sábados: 9:30 - 13:30', imagen: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=400&h=250&fit=crop', fotos: [] },
+                    { id: 3, nombre: 'Sede Valencia', direccion: 'Calle Colón 78, Valencia', descripcion: 'Espacio luminoso y acogedor ideal para las más pequeñas. Grupos reducidos para una atención personalizada.', horario: 'Lunes a Jueves: 17:00 - 20:00 | Sábados: 10:00 - 13:00', imagen: 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&h=250&fit=crop', fotos: [] },
+                    { id: 4, nombre: 'Sede Sevilla', direccion: 'Plaza de España 5, Sevilla', descripcion: 'Sede con amplia trayectoria en competiciones regionales. Preparación física específica y coreografías.', horario: 'Lunes a Viernes: 16:00 - 20:00 | Sábados: 10:00 - 14:00', imagen: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=250&fit=crop', fotos: [] },
+                    { id: 5, nombre: 'Sede Bilbao', direccion: 'Gran Vía 12, Bilbao', descripcion: 'La sede más nueva de la academia. Instalaciones modernas con suelo amortiguado y barras de ballet.', horario: 'Lunes a Viernes: 16:30 - 20:30', imagen: 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=400&h=250&fit=crop', fotos: [] }
+                ],
+                eventos: [
+                    { id: 1, fecha: '15 Mar 2025', titulo: 'Competición Regional', descripcion: 'Pabellón Municipal, Madrid - Categorías infantil y cadete.' },
+                    { id: 2, fecha: '10 May 2025', titulo: 'Exhibición de Primavera', descripcion: 'Centro Deportivo de Barcelona - Coreografías especiales.' },
+                    { id: 3, fecha: '5 Jul 2025', titulo: 'Stage de Verano', descripcion: 'Instalaciones de Valencia - Entrenamiento intensivo de 3 días.' },
+                    { id: 4, fecha: '20 Sep 2025', titulo: 'Campeonato Nacional', descripcion: 'Palacio de Deportes de Sevilla - Selección autonómica.' },
+                    { id: 5, fecha: '12 Dic 2025', titulo: 'Gala de Navidad', descripcion: 'Teatro Principal, Bilbao - Actuación de todas las alumnas.' }
+                ]
+            };
+
+            let appData = null;
+            let isLoggedIn = false;
+            let editMode = false;
+            let currentAlbumSedeIndex = null;
+
+            // ===== CONEXIÓN CON NETLIFY FUNCTIONS =====
+            async function loadDataFromServer() {
+  try {
+    const response = await fetch('/api/get-data');
+    if (!response.ok) throw new Error('Error al cargar: ' + response.status);
+    const data = await response.json();
+    // Si el servidor devuelve un objeto vacío o sin datos, usamos defaults
+    if (!data || Object.keys(data).length === 0) {
+      console.log('No hay datos en el servidor, inicializando con defaults...');
+      appData = JSON.parse(JSON.stringify(DEFAULT_CONTENT));
+      // Guardamos los defaults en el servidor (intentamos varias veces)
+      await saveDataToServer(true);
+    } else {
+      appData = data;
+    }
+  } catch (e) {
+    console.warn('Error al cargar datos del servidor, usando datos locales:', e);
+    appData = JSON.parse(JSON.stringify(DEFAULT_CONTENT));
+    // Intentamos guardar para crear el store
+    try {
+      await saveDataToServer(true);
+    } catch (_) {
+      console.warn('No se pudo guardar los defaults en el servidor');
+    }
+  }
+  // Asegurar propiedades faltantes
+  if (!appData.sedes) appData.sedes = DEFAULT_CONTENT.sedes;
+  if (!appData.eventos) appData.eventos = DEFAULT_CONTENT.eventos;
+  if (!appData.statYears) appData.statYears = DEFAULT_CONTENT.statYears;
+  if (!appData.statSedes) appData.statSedes = DEFAULT_CONTENT.statSedes;
+  if (!appData.statAlumnas) appData.statAlumnas = DEFAULT_CONTENT.statAlumnas;
+  appData.sedes.forEach(sede => { if (!sede.fotos) sede.fotos = []; });
+  // Credenciales
+  if (!appData.credentials) {
+    appData.credentials = {
+      username: 'entrenadora',
+      passwordHash: await hashPassword(DEFAULT_PASSWORD)
+    };
+  }
+  updateAllContent();
+}
+
+            async function saveDataToServer(silent = false) {
+  try {
+    const response = await fetch('/api/save-data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(appData)
+    });
+    if (!response.ok) throw new Error('Error al guardar: ' + response.status);
+    if (!silent) showToast('💾 Cambios guardados en la nube', 'success');
+  } catch (error) {
+    console.error('Error al guardar en la nube:', error);
+    if (!silent) showToast('❌ Error al guardar en la nube', 'error');
+  }
+}
+
+            // ===== ACTUALIZAR UI =====
+            function updateAllContent() {
+                if (!appData) return;
+                document.getElementById('aboutImage').src = appData.aboutImage || DEFAULT_CONTENT.aboutImage;
+                document.getElementById('aboutTitle').textContent = appData.aboutTitle || DEFAULT_CONTENT.aboutTitle;
+                document.getElementById('aboutDesc1').innerHTML = appData.aboutDesc1 || DEFAULT_CONTENT.aboutDesc1;
+                document.getElementById('aboutDesc2').innerHTML = appData.aboutDesc2 || DEFAULT_CONTENT.aboutDesc2;
+                document.getElementById('statYears').textContent = appData.statYears || DEFAULT_CONTENT.statYears;
+                document.getElementById('statSedes').textContent = appData.statSedes || DEFAULT_CONTENT.statSedes;
+                document.getElementById('statAlumnas').textContent = appData.statAlumnas || DEFAULT_CONTENT.statAlumnas;
+                document.getElementById('contactTitle').textContent = appData.contactTitle || DEFAULT_CONTENT.contactTitle;
+                document.getElementById('contactAddress').textContent = appData.contactAddress || DEFAULT_CONTENT.contactAddress;
+                document.getElementById('contactPhone').textContent = appData.contactPhone || DEFAULT_CONTENT.contactPhone;
+                document.getElementById('contactEmail').textContent = appData.contactEmail || DEFAULT_CONTENT.contactEmail;
+                renderSedes();
+                renderEventos();
+            }
+
+            function renderSedes() {
+                const grid = document.getElementById('sedesGrid');
+                if (!grid) return;
+                const sedes = appData.sedes || [];
+                grid.innerHTML = sedes.map((sede, i) => `
+                    <div class="sede-card" data-sede-index="${i}">
+                        <div class="sede-card-image">
+                            <img src="${escapeHTML(sede.imagen || 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=400&h=250&fit=crop')}" alt="${escapeHTML(sede.nombre)}">
+                            <button class="btn-change-img" onclick="changeSedeImage(${i})" style="${editMode ? 'display:block;' : 'display:none;'}">🖼️ Cambiar imagen</button>
+                        </div>
+                        <div class="sede-card-body">
+                            <h4 class="sede-nombre">${escapeHTML(sede.nombre)}</h4>
+                            <div class="sede-location">📍 ${escapeHTML(sede.direccion)}</div>
+                            <p class="sede-desc">${escapeHTML(sede.descripcion)}</p>
+                            <div class="sede-schedule">🕐 ${escapeHTML(sede.horario)}</div>
+                            <button class="sede-album-btn" onclick="openAlbumModal(${i})">📸 Ver álbum (${sede.fotos ? sede.fotos.length : 0})</button>
+                            ${editMode ? `<button onclick="removeSede(${i})" style="margin-top:8px;background:#ef4444;color:white;border:none;padding:6px 12px;border-radius:20px;cursor:pointer;font-size:0.8rem;">🗑️ Eliminar sede</button>` : ''}
+                        </div>
+                    </div>
+                `).join('');
+                if (sedes.length === 0 && editMode) {
+                    grid.innerHTML = '<p style="text-align:center;color:#6b7280;grid-column:1/-1;">No hay sedes. Usa el botón "Añadir sede" en el panel de administración.</p>';
+                }
+                document.querySelectorAll('.btn-change-img').forEach(btn => {
+                    btn.style.display = editMode ? 'block' : 'none';
+                });
+                const btnAbout = document.getElementById('btnChangeAboutImage');
+                if (btnAbout) btnAbout.style.display = editMode ? 'block' : 'none';
+            }
+
+            function renderEventos() {
+                const grid = document.getElementById('eventosGrid');
+                if (!grid) return;
+                const eventos = appData.eventos || [];
+                eventos.sort((a, b) => a.fecha.localeCompare(b.fecha));
+                grid.innerHTML = eventos.map((ev, i) => `
+                    <div class="evento-card" data-evento-index="${i}">
+                        <div class="evento-fecha evento-fecha-editable">${escapeHTML(ev.fecha)}</div>
+                        <div class="evento-info">
+                            <h4 class="evento-titulo-editable">${escapeHTML(ev.titulo)}</h4>
+                            <p class="evento-desc-editable">${escapeHTML(ev.descripcion)}</p>
+                        </div>
+                        ${editMode ? `<button class="btn-remove-evento" onclick="removeEvento(${i})">🗑️</button>` : ''}
+                    </div>
+                `).join('');
+                if (eventos.length === 0 && editMode) {
+                    grid.innerHTML = '<p style="text-align:center;color:#6b7280;grid-column:1/-1;">No hay eventos. Usa el botón "Añadir evento" en el panel de administración.</p>';
+                }
+            }
+
+            // ===== ÁLBUM DE FOTOS =====
+            function openAlbumModal(sedeIndex) {
+                currentAlbumSedeIndex = sedeIndex;
+                const sede = appData.sedes[sedeIndex];
+                document.getElementById('albumTitle').textContent = `Álbum: ${sede.nombre}`;
+                renderAlbumFotos(sedeIndex);
+                document.getElementById('albumModal').classList.add('active');
+                document.getElementById('albumAddFoto').style.display = isLoggedIn ? 'flex' : 'none';
+            }
+
+            function closeAlbumModal() {
+                document.getElementById('albumModal').classList.remove('active');
+                currentAlbumSedeIndex = null;
+            }
+
+            function renderAlbumFotos(sedeIndex) {
+                const sede = appData.sedes[sedeIndex];
+                const grid = document.getElementById('albumGrid');
+                if (!sede.fotos || sede.fotos.length === 0) {
+                    grid.innerHTML = '<p style="grid-column:1/-1; color:#6b7280;">No hay fotos en este álbum.</p>';
+                    return;
+                }
+                grid.innerHTML = sede.fotos.map((url, idx) => `
+                    <div class="foto-item">
+                        <img src="${escapeHTML(url)}" alt="Foto ${idx+1}" loading="lazy" onerror="this.style.display='none'">
+                        ${isLoggedIn ? `<button class="delete-foto" onclick="removeFotoFromAlbum(${sedeIndex}, ${idx})">✕</button>` : ''}
+                    </div>
+                `).join('');
+            }
+
+            function addFotoToAlbum() {
+                if (!isLoggedIn) { showToast('⚠️ Debes iniciar sesión', 'error'); return; }
+                if (currentAlbumSedeIndex === null) return;
+                const input = document.getElementById('albumFotoUrl');
+                const url = input.value.trim();
+                if (!url) { showToast('❌ Introduce una URL válida', 'error'); return; }
+                appData.sedes[currentAlbumSedeIndex].fotos.push(url);
+                saveDataToServer();
+                renderAlbumFotos(currentAlbumSedeIndex);
+                input.value = '';
+                showToast('✅ Foto añadida al álbum', 'success');
+                renderSedes(); // actualiza contador
+            }
+
+            function removeFotoFromAlbum(sedeIndex, fotoIndex) {
+                if (!isLoggedIn) return;
+                if (!confirm('¿Eliminar esta foto del álbum?')) return;
+                appData.sedes[sedeIndex].fotos.splice(fotoIndex, 1);
+                saveDataToServer();
+                renderAlbumFotos(sedeIndex);
+                showToast('🗑️ Foto eliminada', 'success');
+                renderSedes(); // actualiza contador
+            }
+
+            // ===== SEDES CRUD =====
+            function changeSedeImage(index) {
+                if (!isLoggedIn) return;
+                const newUrl = prompt('Introduce la URL de la nueva imagen para esta sede:', appData.sedes[index].imagen);
+                if (newUrl && newUrl.trim()) {
+                    appData.sedes[index].imagen = newUrl.trim();
+                    saveDataToServer();
+                    renderSedes();
+                    if (editMode) restoreEditMode();
+                    showToast('🖼️ Imagen de sede actualizada', 'success');
+                }
+            }
+
+            function addSede() {
+                if (!isLoggedIn) { showToast('⚠️ Inicia sesión primero', 'error'); openLoginModal(); return; }
+                const nombre = prompt('Nombre de la nueva sede:');
+                if (!nombre || !nombre.trim()) return;
+                const direccion = prompt('Dirección:') || 'Dirección por definir';
+                const descripcion = prompt('Descripción:') || 'Descripción por definir';
+                const horario = prompt('Horario:') || 'Horario por definir';
+                const imagen = prompt('URL de la imagen (deja vacío para una por defecto):') || 'https://images.unsplash.com/photo-1518611012118-696072aa579a?w=400&h=250&fit=crop';
+                const newSede = {
+                    id: Date.now(),
+                    nombre: nombre.trim(),
+                    direccion: direccion.trim(),
+                    descripcion: descripcion.trim(),
+                    horario: horario.trim(),
+                    imagen: imagen.trim(),
+                    fotos: []
+                };
+                appData.sedes.push(newSede);
+                saveDataToServer();
+                renderSedes();
+                if (editMode) restoreEditMode();
+                showToast('✅ Sede añadida correctamente', 'success');
+            }
+
+            function removeSede(index) {
+                if (!isLoggedIn) return;
+                if (!confirm('¿Estás segura de eliminar esta sede? Esta acción no se puede deshacer.')) return;
+                appData.sedes.splice(index, 1);
+                saveDataToServer();
+                renderSedes();
+                if (editMode) restoreEditMode();
+                showToast('🗑️ Sede eliminada', 'success');
+            }
+
+            // ===== EVENTOS CRUD =====
+            function addEvento() {
+                if (!isLoggedIn) { showToast('⚠️ Inicia sesión primero', 'error'); openLoginModal(); return; }
+                const fecha = prompt('Fecha del evento (ej: 15 Mar 2025):');
+                if (!fecha || !fecha.trim()) return;
+                const titulo = prompt('Título del evento:') || 'Evento sin título';
+                const descripcion = prompt('Descripción:') || 'Sin descripción';
+                const newEvento = {
+                    id: Date.now(),
+                    fecha: fecha.trim(),
+                    titulo: titulo.trim(),
+                    descripcion: descripcion.trim()
+                };
+                appData.eventos.push(newEvento);
+                saveDataToServer();
+                renderEventos();
+                if (editMode) restoreEditMode();
+                showToast('✅ Evento añadido correctamente', 'success');
+            }
+
+            function removeEvento(index) {
+                if (!isLoggedIn) return;
+                if (!confirm('¿Eliminar este evento?')) return;
+                appData.eventos.splice(index, 1);
+                saveDataToServer();
+                renderEventos();
+                if (editMode) restoreEditMode();
+                showToast('🗑️ Evento eliminado', 'success');
+            }
+
+            // ===== EDICIÓN EN LÍNEA =====
+            function makeAllEditable() {
+                const editableIds = ['aboutTitle', 'aboutDesc1', 'aboutDesc2', 'contactTitle', 'contactAddress', 'contactPhone', 'contactEmail'];
+                editableIds.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) {
+                        el.classList.add('editable-highlight');
+                        el.setAttribute('contenteditable', 'true');
+                        el.addEventListener('blur', handleEditableBlur);
+                    }
+                });
+                const statIds = ['statYears', 'statSedes', 'statAlumnas'];
+                statIds.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) {
+                        el.classList.add('editable-highlight');
+                        el.setAttribute('contenteditable', 'true');
+                        el.addEventListener('blur', handleStatBlur);
+                    }
+                });
+                document.querySelectorAll('.sede-nombre, .sede-desc, .sede-location, .sede-schedule').forEach(el => {
+                    el.classList.add('editable-highlight');
+                    el.setAttribute('contenteditable', 'true');
+                    el.addEventListener('blur', handleSedeEditableBlur);
+                });
+                document.querySelectorAll('.evento-fecha-editable, .evento-titulo-editable, .evento-desc-editable').forEach(el => {
+                    el.classList.add('editable-highlight');
+                    el.setAttribute('contenteditable', 'true');
+                    el.addEventListener('blur', handleEventoEditableBlur);
+                });
+            }
+
+            function removeAllEditable() {
+                document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+                    el.classList.remove('editable-highlight');
+                    el.setAttribute('contenteditable', 'false');
+                    el.removeEventListener('blur', handleEditableBlur);
+                    el.removeEventListener('blur', handleStatBlur);
+                    el.removeEventListener('blur', handleSedeEditableBlur);
+                    el.removeEventListener('blur', handleEventoEditableBlur);
+                });
+            }
+
+            function handleEditableBlur(e) {
+                const el = e.target;
+                const id = el.id;
+                const newValue = el.innerText.trim();
+                if (!newValue) { updateAllContent(); return; }
+                const keyMap = {
+                    'aboutTitle': 'aboutTitle', 'aboutDesc1': 'aboutDesc1', 'aboutDesc2': 'aboutDesc2',
+                    'contactTitle': 'contactTitle', 'contactAddress': 'contactAddress', 'contactPhone': 'contactPhone', 'contactEmail': 'contactEmail'
+                };
+                if (keyMap[id]) {
+                    appData[keyMap[id]] = newValue;
+                    saveDataToServer();
+                    showToast('💾 Contenido guardado', 'success');
+                }
+            }
+
+            function handleStatBlur(e) {
+                const el = e.target;
+                const id = el.id;
+                const newValue = el.innerText.trim();
+                if (!newValue) { updateAllContent(); return; }
+                const keyMap = { 'statYears': 'statYears', 'statSedes': 'statSedes', 'statAlumnas': 'statAlumnas' };
+                if (keyMap[id]) {
+                    appData[keyMap[id]] = newValue;
+                    saveDataToServer();
+                    showToast('💾 Estadística actualizada', 'success');
+                }
+            }
+
+            function handleSedeEditableBlur(e) {
+                const el = e.target;
+                const card = el.closest('.sede-card');
+                if (!card) return;
+                const index = parseInt(card.getAttribute('data-sede-index'));
+                if (isNaN(index) || !appData.sedes[index]) return;
+                const newValue = el.innerText.trim();
+                if (!newValue) { renderSedes(); restoreEditMode(); return; }
+                if (el.classList.contains('sede-nombre')) appData.sedes[index].nombre = newValue;
+                if (el.classList.contains('sede-desc')) appData.sedes[index].descripcion = newValue;
+                if (el.classList.contains('sede-location')) appData.sedes[index].direccion = newValue;
+                if (el.classList.contains('sede-schedule')) appData.sedes[index].horario = newValue;
+                saveDataToServer();
+                showToast('💾 Sede actualizada', 'success');
+                renderSedes();
+                restoreEditMode();
+            }
+
+            function handleEventoEditableBlur(e) {
+                const el = e.target;
+                const card = el.closest('.evento-card');
+                if (!card) return;
+                const index = parseInt(card.getAttribute('data-evento-index'));
+                if (isNaN(index) || !appData.eventos[index]) return;
+                const newValue = el.innerText.trim();
+                if (!newValue) { renderEventos(); restoreEditMode(); return; }
+                if (el.classList.contains('evento-fecha-editable')) appData.eventos[index].fecha = newValue;
+                else if (el.classList.contains('evento-titulo-editable')) appData.eventos[index].titulo = newValue;
+                else if (el.classList.contains('evento-desc-editable')) appData.eventos[index].descripcion = newValue;
+                saveDataToServer();
+                showToast('💾 Evento actualizado', 'success');
+                renderEventos();
+                restoreEditMode();
+            }
+
+            function restoreEditMode() {
+                if (editMode) { setTimeout(() => { removeAllEditable(); makeAllEditable(); }, 100); }
+            }
+
+            // ===== LOGIN =====
+            async function handleLogin(e) {
+                e.preventDefault();
+                const usernameInput = document.getElementById('username').value.trim();
+                const passwordInput = document.getElementById('password').value.trim();
+                const errorEl = document.getElementById('loginError');
+                if (!appData.credentials) {
+                    appData.credentials = { username: 'entrenadora', passwordHash: await hashPassword(DEFAULT_PASSWORD) };
+                }
+                const inputHash = await hashPassword(passwordInput);
+                if (usernameInput === appData.credentials.username && inputHash === appData.credentials.passwordHash) {
+                    isLoggedIn = true;
+                    closeLoginModal();
+                    showToast('✅ Bienvenida, entrenadora', 'success');
+                    updateLoginUI();
+                    document.getElementById('username').value = '';
+                    document.getElementById('password').value = '';
+                    errorEl.classList.remove('show');
+                } else {
+                    errorEl.classList.add('show');
+                    setTimeout(() => errorEl.classList.remove('show'), 2500);
+                }
+            }
+
+            function logout() {
+                isLoggedIn = false;
+                editMode = false;
+                updateLoginUI();
+                updateAllContent();
+                document.getElementById('editingIndicator').classList.remove('active');
+                document.getElementById('adminDropdownMenu').classList.remove('show');
+                showToast('👋 Sesión cerrada', 'success');
+                closeAlbumModal();
+            }
+
+            function updateLoginUI() {
+                document.getElementById('btnLoginNav').style.display = isLoggedIn ? 'none' : 'inline-block';
+                document.getElementById('logoutNavItem').style.display = isLoggedIn ? 'block' : 'none';
+                document.getElementById('adminNavItem').style.display = isLoggedIn ? 'block' : 'none';
+            }
+
+            function openLoginModal() {
+                if (isLoggedIn) { showToast('ℹ️ Ya has iniciado sesión', 'success'); return; }
+                document.getElementById('loginModal').classList.add('active');
+                document.getElementById('loginError').classList.remove('show');
+                setTimeout(() => document.getElementById('username').focus(), 300);
+            }
+
+            function closeLoginModal() { document.getElementById('loginModal').classList.remove('active'); }
+
+            // ===== ADMIN DROPDOWN =====
+            function toggleAdminDropdown(e) {
+                e.stopPropagation();
+                document.getElementById('adminDropdownMenu').classList.toggle('show');
+            }
+
+            // ===== ADMIN FUNCIONES =====
+            function toggleEditMode() {
+                if (!isLoggedIn) { showToast('⚠️ Debes iniciar sesión primero', 'error'); openLoginModal(); return; }
+                editMode = !editMode;
+                const indicator = document.getElementById('editingIndicator');
+                if (editMode) {
+                    indicator.classList.add('active');
+                    makeAllEditable();
+                    showToast('✏️ Modo edición activado', 'success');
+                } else {
+                    indicator.classList.remove('active');
+                    removeAllEditable();
+                    showToast('🔒 Modo edición desactivado', 'success');
+                }
+                renderSedes();
+                renderEventos();
+            }
+
+            function changeAboutImage() {
+                if (!isLoggedIn) return;
+                const newUrl = prompt('Introduce la URL de la nueva imagen principal:', appData.aboutImage);
+                if (newUrl && newUrl.trim()) {
+                    appData.aboutImage = newUrl.trim();
+                    saveDataToServer();
+                    document.getElementById('aboutImage').src = newUrl.trim();
+                    showToast('🖼️ Imagen principal actualizada', 'success');
+                }
+            }
+
+            async function changePasswordPrompt() {
+                if (!isLoggedIn) { showToast('⚠️ Inicia sesión primero', 'error'); openLoginModal(); return; }
+                const currentPass = prompt('Introduce tu contraseña ACTUAL:');
+                if (!currentPass) return;
+                const currentHash = await hashPassword(currentPass.trim());
+                if (currentHash !== appData.credentials.passwordHash) { showToast('❌ Contraseña actual incorrecta', 'error'); return; }
+                const newPass = prompt('Introduce tu NUEVA contraseña (mínimo 6 caracteres):');
+                if (!newPass || newPass.trim().length < 6) { showToast('❌ La contraseña debe tener al menos 6 caracteres', 'error'); return; }
+                const confirmPass = prompt('Confirma tu nueva contraseña:');
+                if (newPass.trim() !== confirmPass.trim()) { showToast('❌ Las contraseñas no coinciden', 'error'); return; }
+                appData.credentials.passwordHash = await hashPassword(newPass.trim());
+                saveDataToServer();
+                showToast('🔑 Contraseña actualizada correctamente', 'success');
+            }
+
+            function resetToDefaults() {
+                if (!isLoggedIn) return;
+                if (!confirm('¿Estás segura de restaurar TODOS los valores por defecto? Se perderán todos los cambios realizados.')) return;
+                appData = JSON.parse(JSON.stringify(DEFAULT_CONTENT));
+                appData.credentials = { username: 'entrenadora', passwordHash: null };
+                hashPassword(DEFAULT_PASSWORD).then(hash => {
+                    appData.credentials.passwordHash = hash;
+                    saveDataToServer();
+                    updateAllContent();
+                    if (editMode) { removeAllEditable(); makeAllEditable(); }
+                    showToast('🔄 Valores restaurados por defecto', 'success');
+                });
+            }
+
+            // ===== UTILIDADES =====
+            function escapeHTML(str) {
+                const div = document.createElement('div');
+                div.textContent = str;
+                return div.innerHTML;
+            }
+
+            function showToast(message, type = 'success') {
+                const toast = document.getElementById('toast');
+                toast.textContent = message;
+                toast.className = 'toast ' + type + ' show';
+                clearTimeout(toast._timeout);
+                toast._timeout = setTimeout(() => toast.classList.remove('show'), 2500);
+            }
+
+            // ===== EVENTOS DE UI =====
+            function handleScroll() {
+                document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+            }
+
+            function setupHamburger() {
+                const hamburger = document.getElementById('hamburger');
+                const navLinks = document.getElementById('navLinks');
+                hamburger.addEventListener('click', () => {
+                    hamburger.classList.toggle('active');
+                    navLinks.classList.toggle('active');
+                });
+                navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+                    hamburger.classList.remove('active');
+                    navLinks.classList.remove('active');
+                }));
+            }
+
+            function setupModal() {
+                document.getElementById('loginModal').addEventListener('click', (e) => { if (e.target === e.currentTarget) closeLoginModal(); });
+                document.getElementById('albumModal').addEventListener('click', (e) => { if (e.target === e.currentTarget) closeAlbumModal(); });
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        closeLoginModal();
+                        closeAlbumModal();
+                        document.getElementById('adminDropdownMenu').classList.remove('show');
+                    }
+                });
+                document.addEventListener('click', (e) => {
+                    const dropdown = document.getElementById('adminDropdownMenu');
+                    const btn = document.querySelector('.dropdown-btn');
+                    if (dropdown && !dropdown.contains(e.target) && !btn.contains(e.target)) {
+                        dropdown.classList.remove('show');
+                    }
+                });
+            }
+
+            function createParticles() {
+                const container = document.getElementById('heroParticles');
+                if (!container) return;
+                const colors = ['#d4a843', '#a64dba', '#f0d078', '#c060d4', '#ffffff', '#e8c547'];
+                for (let i = 0; i < 35; i++) {
+                    const particle = document.createElement('div');
+                    particle.classList.add('particle');
+                    const size = Math.random() * 8 + 2;
+                    particle.style.width = size + 'px';
+                    particle.style.height = size + 'px';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    particle.style.animationDuration = Math.random() * 10 + 8 + 's';
+                    particle.style.animationDelay = Math.random() * 10 + 's';
+                    particle.style.boxShadow = `0 0 ${size*2}px ${particle.style.background}`;
+                    container.appendChild(particle);
+                }
+            }
+
+            // ===== ASIGNACIÓN GLOBAL INMEDIATA =====
+            window.openLoginModal = openLoginModal;
+            window.closeLoginModal = closeLoginModal;
+            window.handleLogin = handleLogin;
+            window.logout = logout;
+            window.toggleEditMode = toggleEditMode;
+            window.addSede = addSede;
+            window.removeSede = removeSede;
+            window.addEvento = addEvento;
+            window.removeEvento = removeEvento;
+            window.changePasswordPrompt = changePasswordPrompt;
+            window.resetToDefaults = resetToDefaults;
+            window.changeSedeImage = changeSedeImage;
+            window.changeAboutImage = changeAboutImage;
+            window.toggleAdminDropdown = toggleAdminDropdown;
+            window.openAlbumModal = openAlbumModal;
+            window.closeAlbumModal = closeAlbumModal;
+            window.addFotoToAlbum = addFotoToAlbum;
+            window.removeFotoFromAlbum = removeFotoFromAlbum;
+
+            // ===== INICIALIZACIÓN =====
+            async function init() {
+                await loadDataFromServer();
+                updateLoginUI();
+                setupHamburger();
+                setupModal();
+                createParticles();
+                window.addEventListener('scroll', handleScroll);
+                handleScroll();
+            }
+
+            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+            else init();
+        })();
+    </script>
+</body>
+</html>
