@@ -2,24 +2,22 @@ const { getStore } = require('@netlify/blobs');
 
 exports.handler = async (event) => {
   try {
-    console.log('📥 Intentando obtener datos del store...');
+    console.log('📥 Obteniendo datos...');
+
     const siteID = process.env.SITE_ID;
-    const token = process.env.NETLIFY_AUTH_TOKEN;
+    const token = process.env.NETLIFY_ACCESS_TOKEN;
 
     if (!siteID || !token) {
-      console.error('❌ Faltan siteID o token');
-      return {
-        statusCode: 500,
-        body: JSON.stringify({ error: 'Faltan variables de entorno SITE_ID o NETLIFY_AUTH_TOKEN' })
-      };
+      throw new Error('No se encontraron SITE_ID o NETLIFY_ACCESS_TOKEN');
     }
 
-    const store = getStore('academy-data', {
+    const store = getStore({
+      name: 'academy-data',
       siteID: siteID,
       token: token
     });
-    console.log('✅ Store obtenido correctamente');
 
+    console.log('✅ Store obtenido correctamente');
     const data = await store.get('data', { type: 'json' });
     console.log('📄 Datos obtenidos:', data ? '✅ existen' : '❌ vacíos');
 
@@ -31,7 +29,7 @@ exports.handler = async (event) => {
     console.error('❌ Error en get-data:', error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'Error al obtener los datos: ' + error.message })
+      body: JSON.stringify({ error: 'Error: ' + error.message })
     };
   }
 };
