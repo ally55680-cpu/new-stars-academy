@@ -8,7 +8,8 @@ exports.handler = async (event) => {
     const token = process.env.NETLIFY_ACCESS_TOKEN;
 
     if (!siteID || !token) {
-      throw new Error('No se encontraron SITE_ID o NETLIFY_ACCESS_TOKEN');
+      console.error('❌ Faltan variables de entorno:', { siteID: !!siteID, token: !!token });
+      throw new Error('Faltan SITE_ID o NETLIFY_ACCESS_TOKEN');
     }
 
     const store = getStore({
@@ -18,6 +19,7 @@ exports.handler = async (event) => {
     });
 
     console.log('✅ Store obtenido correctamente');
+
     const data = await store.get('data', { type: 'json' });
     console.log('📄 Datos obtenidos:', data ? '✅ existen' : '❌ vacíos');
 

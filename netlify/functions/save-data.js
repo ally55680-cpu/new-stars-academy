@@ -12,13 +12,16 @@ exports.handler = async (event) => {
     const newData = JSON.parse(event.body);
     console.log('📦 Guardando datos...');
 
+    // Obtener variables de entorno
     const siteID = process.env.SITE_ID;
     const token = process.env.NETLIFY_ACCESS_TOKEN;
 
     if (!siteID || !token) {
-      throw new Error('No se encontraron SITE_ID o NETLIFY_ACCESS_TOKEN');
+      console.error('❌ Faltan variables de entorno:', { siteID: !!siteID, token: !!token });
+      throw new Error('Faltan SITE_ID o NETLIFY_ACCESS_TOKEN');
     }
 
+    // Crear store con credenciales explícitas
     const store = getStore({
       name: 'academy-data',
       siteID: siteID,
@@ -26,6 +29,7 @@ exports.handler = async (event) => {
     });
 
     console.log('✅ Store obtenido correctamente');
+
     await store.set('data', newData);
     console.log('✅ Datos guardados correctamente');
 
